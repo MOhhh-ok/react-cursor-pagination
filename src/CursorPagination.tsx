@@ -5,7 +5,7 @@ import { useCursorPagination } from './useCursorPagination';
 
 export function CursorPagination<T extends string | number>(props: CursorPaginationProps<T>) {
   const { nextCursor, paginationKey = DEFAULT_PAGINATION_KEY } = props;
-  const { cursors, addNextCursor, removeLastCursor, removeAllCursors } = useCursorPagination(paginationKey);
+  const { cursors, addNextCursor, removeLastCursor, removeAllCursors } = useCursorPagination<T>(paginationKey);
 
   return (
     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }
