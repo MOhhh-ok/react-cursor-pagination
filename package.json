@@ -1,8 +1,16 @@
 {
   "name": "react-cursor-pagination",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "A simple React cursor-based pagination library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "pagination"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "pnpm run build"
