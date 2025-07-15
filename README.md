@@ -168,6 +168,71 @@ function App() {
 }
 ```
 
+### State Scope Management
+
+The library provides flexible state management with two levels of isolation:
+
+#### 1. Pagination Key-based Separation
+
+Use different `paginationKey` values to manage independent pagination states within the same component tree:
+
+```tsx
+function Dashboard() {
+  const { currentCursor: userCursor } = useCursorPagination<string>('users');
+  const { currentCursor: orderCursor } = useCursorPagination<number>('orders');
+  
+  return (
+    <div>
+      <CursorPagination 
+        nextCursor={userNextCursor} 
+        paginationKey="users" 
+      />
+      <CursorPagination 
+        nextCursor={orderNextCursor} 
+        paginationKey="orders" 
+      />
+    </div>
+  );
+}
+```
+
+#### 2. Provider-based Isolation
+
+For complete state isolation between different parts of your app, use Jotai's `Provider`:
+
+```tsx
+import { Provider } from 'react-cursor-pagination';
+
+function App() {
+  return (
+    <div>
+      <Provider>
+        <UserManagement />  {/* Independent pagination state */}
+      </Provider>
+      
+      <Provider>
+        <OrderManagement /> {/* Completely separate pagination state */}
+      </Provider>
+    </div>
+  );
+}
+```
+
+#### 3. Combined Usage
+
+You can combine both approaches for maximum flexibility:
+
+```tsx
+<Provider>
+  <CursorPagination paginationKey="users" nextCursor={userNextCursor} />
+  <CursorPagination paginationKey="orders" nextCursor={orderNextCursor} />
+</Provider>
+```
+
+This approach provides:
+- **Horizontal separation**: Different `paginationKey` values for multiple pagination instances within the same context
+- **Vertical separation**: Different `Provider` instances for hierarchical state isolation
+
 ### Custom Pagination UI
 
 Create your own pagination controls using the hook:
