@@ -5,19 +5,16 @@ A lightweight and flexible React library for implementing cursor-based paginatio
 ## Features
 
 - 🚀 Simple cursor-based pagination
-- 📝 TypeScript support
+- 📝 Full TypeScript support with customizable cursor types
 - 🔧 Customizable pagination keys
 - 🎯 Built on Jotai for state management
 - 🎨 Minimal and flexible UI components
+- 🛡️ Type-safe cursor handling
 
 ## Installation
 
 ```bash
 npm install react-cursor-pagination
-# or
-yarn add react-cursor-pagination
-# or
-pnpm add react-cursor-pagination
 ```
 
 ## Quick Start
@@ -46,41 +43,108 @@ function App() {
 }
 ```
 
+## Cursor Type Customization
+
+The library supports **any cursor type** through TypeScript generics, providing full type safety. TypeScript automatically infers the cursor type from usage, so explicit type parameters are only needed for the hook:
+
+### Cursor Type Examples
+
+```tsx
+// Number cursors (e.g., auto-increment IDs)
+const { currentCursor } = useCursorPagination<number>();
+
+// String cursors (e.g., UUIDs, encoded tokens)
+const { currentCursor } = useCursorPagination<string>();
+
+// Date cursors (e.g., timestamp-based pagination)
+const { currentCursor } = useCursorPagination<Date>();
+
+// Custom object cursors (e.g., complex sorting criteria)
+type CustomCursor = {
+  timestamp: number;
+  id: string;
+};
+const { currentCursor } = useCursorPagination<CustomCursor>();
+```
+
+### Type-Safe Examples
+
+#### String-based Cursors
+```tsx
+function PostsList() {
+  const { currentCursor } = useCursorPagination<string>();
+  
+  // currentCursor is automatically typed as string | undefined
+  const { data, nextCursor } = useFetch(`/api/posts?cursor=${currentCursor || ''}`);
+  
+  return (
+    <div>
+      <CursorPagination nextCursor={nextCursor} />
+      {/* render posts */}
+    </div>
+  );
+}
+```
+
+#### Date-based Cursors
+```tsx
+function TimelinePagination() {
+  const { currentCursor } = useCursorPagination<Date>();
+  
+  // currentCursor is automatically typed as Date | undefined
+  const timestamp = currentCursor?.toISOString();
+  const { data, nextCursor } = useFetch(`/api/timeline?before=${timestamp || ''}`);
+  
+  return (
+    <div>
+      <CursorPagination nextCursor={nextCursor} />
+      {/* render timeline */}
+    </div>
+  );
+}
+```
+
+#### Complex Object Cursors
+```tsx
+type SortCursor = {
+  score: number;
+  createdAt: string;
+  id: string;
+};
+
+function SortedResults() {
+  const { currentCursor } = useCursorPagination<SortCursor>();
+  
+  // currentCursor is automatically typed as SortCursor | undefined
+  const { data, nextCursor } = useFetch('/api/results', {
+    body: JSON.stringify({ cursor: currentCursor })
+  });
+  
+  return (
+    <div>
+      <CursorPagination nextCursor={nextCursor} />
+      {/* render results */}
+    </div>
+  );
+}
+```
+
 ### Complete Example
 
 ```tsx
-import { useMemo } from 'react';
 import { CursorPagination, useCursorPagination } from 'react-cursor-pagination';
-
-// Sample data
-const allData = Array.from({ length: 100 }).map((_, idx) => ({
-  id: idx,
-  name: `Item ${idx}`
-}));
-
-const LIMIT = 10;
-
-function fetcher(cursor: number | undefined) {
-  const sliceStart = cursor ? allData.findIndex(item => item.id === cursor) : 0;
-  const data = allData.slice(sliceStart, sliceStart + LIMIT);
-  let nextCursor: number | undefined = data.length === LIMIT ? data[data.length - 1].id + 1 : undefined;
-  
-  if (nextCursor && nextCursor >= allData.length) {
-    nextCursor = undefined;
-  }
-  
-  return { data, nextCursor };
-}
 
 export default function App() {
   const { currentCursor } = useCursorPagination<number>();
-  const result = useMemo(() => fetcher(currentCursor), [currentCursor]);
+  
+  // Your data fetching logic here
+  const { data, nextCursor } = fetchData(currentCursor);
 
   return (
     <div>
-      <CursorPagination nextCursor={result.nextCursor} />
+      <CursorPagination nextCursor={nextCursor} />
       <div>
-        {result.data.map(item => (
+        {data.map(item => (
           <div key={item.id}>{item.name}</div>
         ))}
       </div>
@@ -119,12 +183,12 @@ const {
 - `removeLastCursor()`: Function to go back to previous page
 - `removeAllCursors()`: Function to reset to first page
 
-### CursorPagination<T>
+### CursorPagination\<T>
 
-Pre-built pagination component with navigation buttons.
+Pre-built pagination component with navigation buttons. The cursor type `T` is automatically inferred from the `nextCursor` prop.
 
 ```tsx
-<CursorPagination<T>
+<CursorPagination
   nextCursor={nextCursor}
   paginationKey="optional-key"
 />
@@ -134,6 +198,8 @@ Pre-built pagination component with navigation buttons.
 
 - `nextCursor`: The cursor for the next page (null/undefined if no next page)
 - `paginationKey` (optional): Key to identify pagination instance
+
+**Note**: TypeScript automatically infers the cursor type from `nextCursor`, so explicit type parameters are not required.
 
 ## Advanced Usage
 
@@ -198,21 +264,21 @@ function Dashboard() {
 
 #### 2. Provider-based Isolation
 
-For complete state isolation between different parts of your app, use Jotai's `Provider`:
+For complete state isolation between different parts of your app, use `CursorPaginationProvider`:
 
 ```tsx
-import { Provider } from 'react-cursor-pagination';
+import { CursorPaginationProvider } from 'react-cursor-pagination';
 
 function App() {
   return (
     <div>
-      <Provider>
+      <CursorPaginationProvider>
         <UserManagement />  {/* Independent pagination state */}
-      </Provider>
+      </CursorPaginationProvider>
       
-      <Provider>
+      <CursorPaginationProvider>
         <OrderManagement /> {/* Completely separate pagination state */}
-      </Provider>
+      </CursorPaginationProvider>
     </div>
   );
 }
@@ -223,15 +289,15 @@ function App() {
 You can combine both approaches for maximum flexibility:
 
 ```tsx
-<Provider>
+<CursorPaginationProvider>
   <CursorPagination paginationKey="users" nextCursor={userNextCursor} />
   <CursorPagination paginationKey="orders" nextCursor={orderNextCursor} />
-</Provider>
+</CursorPaginationProvider>
 ```
 
 This approach provides:
 - **Horizontal separation**: Different `paginationKey` values for multiple pagination instances within the same context
-- **Vertical separation**: Different `Provider` instances for hierarchical state isolation
+- **Vertical separation**: Different `CursorPaginationProvider` instances for hierarchical state isolation
 
 ### Custom Pagination UI
 
