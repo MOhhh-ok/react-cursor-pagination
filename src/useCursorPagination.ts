@@ -2,10 +2,10 @@ import { atom, useAtom } from "jotai";
 import { cursorsAtomsMap } from "./atoms";
 import { DEFAULT_PAGINATION_KEY } from "./config";
 
-export function useCursorPagination<T extends string | number>(paginationKey = DEFAULT_PAGINATION_KEY) {
+export function useCursorPagination<T>(paginationKey = DEFAULT_PAGINATION_KEY) {
 
   if (!cursorsAtomsMap.has(paginationKey)) {
-    cursorsAtomsMap.set(paginationKey, atom<(string | number)[]>([]));
+    cursorsAtomsMap.set(paginationKey, atom<T[]>([]));
   }
 
   const cursorsAtom = cursorsAtomsMap.get(paginationKey)!;

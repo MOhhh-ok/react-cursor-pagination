@@ -3,7 +3,7 @@ import { CursorPaginationProps } from './types';
 import { useCursorPagination } from './useCursorPagination';
 
 
-export function CursorPagination<T extends string | number>(props: CursorPaginationProps<T>) {
+export function CursorPagination<T>(props: CursorPaginationProps<T>) {
   const { nextCursor, paginationKey = DEFAULT_PAGINATION_KEY } = props;
   const { cursors, addNextCursor, removeLastCursor, removeAllCursors } = useCursorPagination<T>(paginationKey);
 

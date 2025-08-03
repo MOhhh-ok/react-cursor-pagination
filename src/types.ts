@@ -1,5 +1,4 @@
-
-export type CursorPaginationProps<T extends string | number> = {
+export type CursorPaginationProps<T> = {
   nextCursor?: T | null | undefined;
   paginationKey?: string;
 };
