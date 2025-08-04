@@ -5,10 +5,10 @@ A lightweight and flexible React library for implementing cursor-based paginatio
 ## Features
 
 - 🚀 Simple cursor-based pagination
-- 📝 Full TypeScript support with customizable cursor types
+- 📝 Full TypeScript support with any cursor type (string, number, custom objects)
+- 📚 Stack-based cursor management for seamless back navigation
 - ⚡ Zero-config setup - no provider wrapper required
 - 🎨 Minimal and flexible UI components
-- 🛡️ Type-safe cursor handling
 
 ## Installation
 
