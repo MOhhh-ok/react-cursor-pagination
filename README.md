@@ -6,8 +6,7 @@ A lightweight and flexible React library for implementing cursor-based paginatio
 
 - 🚀 Simple cursor-based pagination
 - 📝 Full TypeScript support with customizable cursor types
-- 🔧 Customizable pagination keys
-- 🎯 Built on Jotai for state management
+- ⚡ Zero-config setup - no provider wrapper required
 - 🎨 Minimal and flexible UI components
 - 🛡️ Type-safe cursor handling
 
