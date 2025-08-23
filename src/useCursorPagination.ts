@@ -4,29 +4,16 @@ import { cursorsAtomsMap } from "./atoms";
 import { DEFAULT_PAGINATION_KEY } from "./config";
 import { CursorPaginationOptions } from "./types";
 
+
 export function useCursorPagination<T>(
   paginationKey = DEFAULT_PAGINATION_KEY,
-  options?: CursorPaginationOptions
+  options?: CursorPaginationOptions<T>
 ) {
   const mapKey = `cursor-${paginationKey}`;
 
   if (!cursorsAtomsMap.has(mapKey)) {
     const newAtom = options?.persist === 'session'
-      ? atomWithStorage<T[]>(
-        mapKey,
-        [],
-        {
-          getItem: (key: string) => {
-            const value = sessionStorage.getItem(key);
-            return value ? JSON.parse(value) : [];
-          },
-          setItem: (key: string, value: T[]) => {
-            sessionStorage.setItem(key, JSON.stringify(value));
-          },
-          removeItem: (key: string) => {
-            sessionStorage.removeItem(key);
-          }
-        })
+      ? createSessionAtom<T>({ mapKey, options })
       : atom<T[]>([]);
     cursorsAtomsMap.set(mapKey, newAtom)
   }
@@ -59,3 +46,38 @@ export function useCursorPagination<T>(
   };
 }
 
+
+function createSessionAtom<T>(params: { mapKey: string, options: CursorPaginationOptions<T> }) {
+  const { mapKey, options } = params;
+  const { storage } = options || {};
+  const { serialize = JSON.stringify, deserialize = JSON.parse } = storage || {};
+
+  return atomWithStorage<T[]>(
+    mapKey,
+    [],
+    {
+      getItem: (key: string) => {
+        const storedStr = sessionStorage.getItem(key);
+        try {
+          return storedStr
+            ? (JSON.parse(storedStr) as string[]).map(s => deserialize(s))
+            : [];
+        } catch (err: any) {
+          console.warn('Failed to parse values.')
+          return [];
+        }
+      },
+      setItem: (key: string, values: T[]) => {
+        try {
+          const saveStr = JSON.stringify(values.map(v => serialize(v)))
+          sessionStorage.setItem(key, saveStr)
+        } catch (err: any) {
+          console.warn('Failed to set values.')
+          sessionStorage.setItem(key, JSON.stringify([]))
+        }
+      },
+      removeItem: (key: string) => {
+        sessionStorage.removeItem(key);
+      }
+    })
+}

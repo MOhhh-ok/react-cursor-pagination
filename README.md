@@ -175,6 +175,9 @@ const {
 - `paginationKey` (optional): String key to identify different pagination instances. Default: `'default'`
 - `options` (optional): Configuration options
   - `persist`: `'session'` to persist cursors in `sessionStorage` per `paginationKey`
+  - `storage` (only when `persist: 'session'`): Customize how cursors are stored/recovered
+    - `serialize(value: T): string` (default: `JSON.stringify`)
+    - `deserialize(value: string): T` (default: `JSON.parse`)
 
 #### Returns
 
@@ -293,7 +296,44 @@ function App() {
 
 Notes:
 - The persisted value is scoped by `paginationKey` and stored under `cursor-${paginationKey}` in `sessionStorage`.
+- Internally, an array of serialized strings is stored; by default, `JSON.stringify`/`JSON.parse` are used.
 - Call `removeAllCursors()` to clear the persisted cursors for that key.
+
+#### Custom serialization (serialize/deserialize)
+
+When persisting complex types (e.g., `Date` or custom objects), provide `storage.serialize` and `storage.deserialize` so values round-trip correctly.
+
+```tsx
+type User = { id: number; registeredAt: Date };
+
+const paginationKey = 'serializedemo';
+
+function Example() {
+  const { currentCursor } = useCursorPagination<User>(paginationKey, {
+    persist: 'session',
+    storage: {
+      serialize: (value) =>
+        JSON.stringify({ id: value.id, registeredAt: value.registeredAt.toISOString() }),
+      deserialize: (value) => {
+        const parsed = JSON.parse(value);
+        return { id: parsed.id, registeredAt: new Date(parsed.registeredAt) } as User;
+      },
+    },
+  });
+
+  const { data, nextCursor } = fetchUsers(currentCursor);
+
+  return (
+    <div>
+      <CursorPagination nextCursor={nextCursor} paginationKey={paginationKey} />
+      {/* ... */}
+    </div>
+  );
+}
+```
+
+Tip:
+- Without custom serializers, `Date` and other non-primitive types are restored as plain strings/objects by `JSON.parse`. Provide serializers to keep correct runtime types.
 
 ### Custom Pagination UI
 

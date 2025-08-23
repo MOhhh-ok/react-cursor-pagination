@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Demo1 } from './Demo1';
+import { SerializeDemo } from './SerializeDemo';
 import { SessionDemo } from './SessionDemo';
 
 type Page = 'normal' | 'session'
@@ -12,6 +13,8 @@ export default function App() {
     <Demo1 />
     <hr />
     <SessionDemo />
+    <hr />
+    <SerializeDemo />
   </div>
 
   const component = page === 'normal' ? <Demo1 /> : <SessionDemo />;

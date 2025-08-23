@@ -3,6 +3,10 @@ export type CursorPaginationProps<T> = {
   paginationKey?: string;
 };
 
-export type CursorPaginationOptions = {
-  persist?: 'session'
+export type CursorPaginationOptions<T> = {
+  persist?: 'session',
+  storage?: {
+    serialize?: (value: T) => string,
+    deserialize?: (value: string) => T,
+  }
 }
