@@ -9,6 +9,7 @@ A lightweight and flexible React library for implementing cursor-based paginatio
 - 📚 Stack-based cursor management for seamless back navigation
 - ⚡ Zero-config setup - no provider wrapper required
 - 🎨 Minimal and flexible UI components
+- 💾 Optional per-key session persistence via sessionStorage
 
 ## Installation
 
@@ -166,12 +167,14 @@ const {
   addNextCursor,
   removeLastCursor,
   removeAllCursors
-} = useCursorPagination<T>(paginationKey?);
+} = useCursorPagination<T>(paginationKey?, options?);
 ```
 
 #### Parameters
 
 - `paginationKey` (optional): String key to identify different pagination instances. Default: `'default'`
+- `options` (optional): Configuration options
+  - `persist`: `'session'` to persist cursors in `sessionStorage` per `paginationKey`
 
 #### Returns
 
@@ -182,7 +185,7 @@ const {
 - `removeLastCursor()`: Function to go back to previous page
 - `removeAllCursors()`: Function to reset to first page
 
-### CursorPagination\<T>
+### CursorPagination<T>
 
 Pre-built pagination component with navigation buttons. The cursor type `T` is automatically inferred from the `nextCursor` prop.
 
@@ -199,6 +202,8 @@ Pre-built pagination component with navigation buttons. The cursor type `T` is a
 - `paginationKey` (optional): Key to identify pagination instance
 
 **Note**: TypeScript automatically infers the cursor type from `nextCursor`, so explicit type parameters are not required.
+
+Tip: Session persistence is configured on the hook (`useCursorPagination`). The `CursorPagination` component will use the same `paginationKey` state managed by the hook.
 
 ## Advanced Usage
 
@@ -233,11 +238,9 @@ function App() {
 }
 ```
 
-### State Scope Management
+### State and Persistence
 
-The library provides flexible state management with two levels of isolation:
-
-#### 1. Pagination Key-based Separation
+#### Pagination Key-based Separation
 
 Use different `paginationKey` values to manage independent pagination states within the same component tree:
 
@@ -261,42 +264,36 @@ function Dashboard() {
 }
 ```
 
-#### 2. Provider-based Isolation
+#### Session Persistence (per key)
 
-For complete state isolation between different parts of your app, use `CursorPaginationProvider`:
+Persist pagination state to `sessionStorage` per `paginationKey` by passing the `persist` option to the hook. This requires no provider and works across routes within the same tab/session.
 
 ```tsx
-import { CursorPaginationProvider } from 'react-cursor-pagination';
-
 function App() {
+  // Users pagination persists in sessionStorage with key "cursor-users"
+  const users = useCursorPagination<string>('users', { persist: 'session' });
+
+  // Orders pagination persists independently with key "cursor-orders"
+  const orders = useCursorPagination<number>('orders', { persist: 'session' });
+
   return (
     <div>
-      <CursorPaginationProvider>
-        <UserManagement />  {/* Independent pagination state */}
-      </CursorPaginationProvider>
-      
-      <CursorPaginationProvider>
-        <OrderManagement /> {/* Completely separate pagination state */}
-      </CursorPaginationProvider>
+      <div>
+        <h2>Users</h2>
+        <CursorPagination nextCursor={userData.nextCursor} paginationKey="users" />
+      </div>
+      <div>
+        <h2>Orders</h2>
+        <CursorPagination nextCursor={orderData.nextCursor} paginationKey="orders" />
+      </div>
     </div>
   );
 }
 ```
 
-#### 3. Combined Usage
-
-You can combine both approaches for maximum flexibility:
-
-```tsx
-<CursorPaginationProvider>
-  <CursorPagination paginationKey="users" nextCursor={userNextCursor} />
-  <CursorPagination paginationKey="orders" nextCursor={orderNextCursor} />
-</CursorPaginationProvider>
-```
-
-This approach provides:
-- **Horizontal separation**: Different `paginationKey` values for multiple pagination instances within the same context
-- **Vertical separation**: Different `CursorPaginationProvider` instances for hierarchical state isolation
+Notes:
+- The persisted value is scoped by `paginationKey` and stored under `cursor-${paginationKey}` in `sessionStorage`.
+- Call `removeAllCursors()` to clear the persisted cursors for that key.
 
 ### Custom Pagination UI
 
