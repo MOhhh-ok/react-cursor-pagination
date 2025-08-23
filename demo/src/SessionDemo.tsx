@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { CursorPagination, useCursorPagination } from 'react-cursor-pagination';
 
 type User = {
@@ -6,13 +6,15 @@ type User = {
   age: number;
 }
 
-export function Demo2() {
-  const { currentCursor } = useCursorPagination<User>();
+const paginationKey = 'abc';
+
+export function SessionDemo() {
+  const { currentCursor } = useCursorPagination<User>(paginationKey, { persist: 'session' });
 
   const res = useMemo(() => fetcher2(currentCursor), [currentCursor])
 
   return <div>
-    <CursorPagination nextCursor={res.nextCursor} />
+    <CursorPagination nextCursor={res.nextCursor} paginationKey={paginationKey} />
     <div>
       <pre>
         {JSON.stringify(res)}

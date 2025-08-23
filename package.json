@@ -1,6 +1,7 @@
 {
   "name": "react-cursor-pagination",
   "version": "0.2.2",
+  "type": "module",
   "description": "A simple React cursor-based pagination library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,6 +14,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"cd demo && pnpm run dev\"",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.1.8",
+    "concurrently": "^9.2.0",
     "typescript": "^5.8.3"
   },
   "license": "MIT",

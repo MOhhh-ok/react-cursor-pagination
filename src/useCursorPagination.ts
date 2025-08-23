@@ -1,14 +1,37 @@
 import { atom, useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import { cursorsAtomsMap } from "./atoms";
 import { DEFAULT_PAGINATION_KEY } from "./config";
+import { CursorPaginationOptions } from "./types";
 
-export function useCursorPagination<T>(paginationKey = DEFAULT_PAGINATION_KEY) {
+export function useCursorPagination<T>(
+  paginationKey = DEFAULT_PAGINATION_KEY,
+  options?: CursorPaginationOptions
+) {
+  const mapKey = `cursor-${paginationKey}`;
 
-  if (!cursorsAtomsMap.has(paginationKey)) {
-    cursorsAtomsMap.set(paginationKey, atom<T[]>([]));
+  if (!cursorsAtomsMap.has(mapKey)) {
+    const newAtom = options?.persist === 'session'
+      ? atomWithStorage<T[]>(
+        mapKey,
+        [],
+        {
+          getItem: (key: string) => {
+            const value = sessionStorage.getItem(key);
+            return value ? JSON.parse(value) : [];
+          },
+          setItem: (key: string, value: T[]) => {
+            sessionStorage.setItem(key, JSON.stringify(value));
+          },
+          removeItem: (key: string) => {
+            sessionStorage.removeItem(key);
+          }
+        })
+      : atom<T[]>([]);
+    cursorsAtomsMap.set(mapKey, newAtom)
   }
 
-  const cursorsAtom = cursorsAtomsMap.get(paginationKey)!;
+  const cursorsAtom = cursorsAtomsMap.get(mapKey)!;
   const [cursors, setCursors] = useAtom(cursorsAtom);
 
   const addNextCursor = (cursor: T | null | undefined) => {

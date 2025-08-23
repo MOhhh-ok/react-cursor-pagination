@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { CursorPagination, useCursorPagination } from 'react-cursor-pagination';
 
-
 export function Demo1() {
   const { currentCursor } = useCursorPagination<number>();
 

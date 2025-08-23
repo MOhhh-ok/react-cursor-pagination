@@ -1,3 +1,3 @@
-import { atom } from "jotai";
+import { atom, WritableAtom } from "jotai";
 
-export const cursorsAtomsMap = new Map<string, ReturnType<typeof atom<any[]>>>();
+export const cursorsAtomsMap = new Map<string, WritableAtom<any[], any, any>>();

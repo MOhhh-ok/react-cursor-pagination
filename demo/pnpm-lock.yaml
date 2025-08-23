@@ -12,8 +12,8 @@ importers:
         specifier: ^19.1.0
         version: 19.1.1
       react-cursor-pagination:
-        specifier: file:../
-        version: file:..(@types/react@19.1.9)(react@19.1.1)
+        specifier: link:../
+        version: link:..
       react-dom:
         specifier: ^19.1.0
         version: 19.1.1(react@19.1.1)
@@ -830,18 +830,6 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  jotai@2.12.5:
-    resolution: {integrity: sha512-G8m32HW3lSmcz/4mbqx0hgJIQ0ekndKWiYP7kWVKi0p6saLXdSoye+FZiOFyonnd7Q482LCzm8sMDl7Ar1NWDw==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -963,9 +951,6 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
-
-  react-cursor-pagination@file:..:
-    resolution: {directory: .., type: directory}
 
   react-dom@19.1.1:
     resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
@@ -1871,11 +1856,6 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  jotai@2.12.5(@types/react@19.1.9)(react@19.1.1):
-    optionalDependencies:
-      '@types/react': 19.1.9
-      react: 19.1.1
-
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.0:
@@ -1976,13 +1956,6 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
-
-  react-cursor-pagination@file:..(@types/react@19.1.9)(react@19.1.1):
-    dependencies:
-      jotai: 2.12.5(@types/react@19.1.9)(react@19.1.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
 
   react-dom@19.1.1(react@19.1.1):
     dependencies:
