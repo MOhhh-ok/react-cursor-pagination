@@ -42,7 +42,8 @@ export function useCursorPagination<T>(
     currentPage: cursors.length + 1,
     addNextCursor,
     removeLastCursor,
-    removeAllCursors
+    removeAllCursors,
+    paginationKey,
   };
 }
 
