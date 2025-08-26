@@ -340,14 +340,14 @@ Tip:
 Create your own pagination controls using the hook:
 
 ```tsx
-function CustomPagination({ nextCursor }: { nextCursor?: string | null }) {
+function CustomPagination<T>({ nextCursor, paginationKey }: { nextCursor?: T, paginationKey?: string }) {
   const { 
     currentPage, 
     addNextCursor, 
     removeLastCursor, 
     removeAllCursors,
     cursors 
-  } = useCursorPagination<string>();
+  } = useCursorPagination<string>(paginationKey);
   
   return (
     <div className="pagination">
