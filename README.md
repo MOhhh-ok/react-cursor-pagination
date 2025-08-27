@@ -340,18 +340,24 @@ Tip:
 Create your own pagination controls using the hook:
 
 ```tsx
-function CustomPagination<T>({ nextCursor, paginationKey }: { nextCursor?: T, paginationKey?: string }) {
-  const { 
-    currentPage, 
-    addNextCursor, 
-    removeLastCursor, 
+function CustomPagination<T>({
+  nextCursor,
+  paginationKey
+}: {
+  nextCursor?: T;
+  paginationKey: string;
+}) {
+  const {
+    currentPage,
+    addNextCursor,
+    removeLastCursor,
     removeAllCursors,
-    cursors 
-  } = useCursorPagination<string>(paginationKey);
+    cursors
+  } = useCursorPagination<T>(paginationKey);
   
   return (
     <div className="pagination">
-      <button 
+      <button
         onClick={removeAllCursors}
         disabled={cursors.length === 0}
         className="btn btn-secondary"
@@ -359,7 +365,7 @@ function CustomPagination<T>({ nextCursor, paginationKey }: { nextCursor?: T, pa
         ← First
       </button>
       
-      <button 
+      <button
         onClick={removeLastCursor}
         disabled={cursors.length === 0}
         className="btn btn-secondary"
@@ -371,7 +377,7 @@ function CustomPagination<T>({ nextCursor, paginationKey }: { nextCursor?: T, pa
         Page {currentPage}
       </span>
       
-      <button 
+      <button
         onClick={() => addNextCursor(nextCursor)}
         disabled={!nextCursor}
         className="btn btn-primary"
