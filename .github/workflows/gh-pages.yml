@@ -26,7 +26,6 @@ jobs:
         with:
           version: 9
           run_install: false
-          cache: true
           
       - name: Install deps (root)
         run: pnpm i --frozen-lockfile
