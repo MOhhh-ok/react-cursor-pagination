@@ -1,0 +1,11 @@
+/* Make code blocks text color white, keep selection readable */
+:root {
+  --ifm-code-color: #ffffff;
+}
+
+/* Prism code blocks */
+.theme-code-block,
+pre code,
+code {
+  color: var(--ifm-code-color) !important;
+}

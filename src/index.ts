@@ -1,4 +1,4 @@
-export * from './CursorPagination';
-export * from './types';
-export * from './useCursorPagination';
+export * from './CursorPagination.js';
+export * from './types.js';
+export * from './useCursorPagination.js';
 // export * from './CursorPaginationProvider';

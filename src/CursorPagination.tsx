@@ -1,6 +1,6 @@
-import { DEFAULT_PAGINATION_KEY } from './config';
-import { CursorPaginationProps } from './types';
-import { useCursorPagination } from './useCursorPagination';
+import { DEFAULT_PAGINATION_KEY } from './config.js';
+import { CursorPaginationProps } from './types.js';
+import { useCursorPagination } from './useCursorPagination.js';
 
 
 export function CursorPagination<T>(props: CursorPaginationProps<T>) {

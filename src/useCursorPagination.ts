@@ -1,8 +1,8 @@
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { cursorsAtomsMap } from "./atoms";
-import { DEFAULT_PAGINATION_KEY } from "./config";
-import { CursorPaginationOptions } from "./types";
+import { cursorsAtomsMap } from "./atoms.js";
+import { DEFAULT_PAGINATION_KEY } from "./config.js";
+import { CursorPaginationOptions } from "./types.js";
 
 
 export function useCursorPagination<T>(
