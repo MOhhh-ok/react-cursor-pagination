@@ -1,7 +1,7 @@
 import type { Data, DataResponse, IdAgeCursor, IdCursor, IdJoinedCursor } from "../types";
 import { dummyData } from "./dummyData";
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 export const fetchByIdCursor = async (params: { id: IdCursor | undefined }) => {
   const { id } = params;

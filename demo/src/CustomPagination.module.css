@@ -1,0 +1,12 @@
+.pagination {
+  border: 1px solid orange;
+  display: inline-block;
+  padding: 1em;
+}
+
+.button {
+  background: orange;
+  color: white;
+  margin: 1em;
+  padding: 0.5em 1em;
+}
