@@ -1,29 +1,23 @@
-import { useState } from 'react';
-import { Demo1 } from './Demo1';
-import { SerializeDemo } from './SerializeDemo';
-import { SessionDemo } from './SessionDemo';
+import { AgeCursorDemo } from './AgeCursorDemo';
+import { IdCursorDemo } from './IdCursorDemo';
+import { IdSessionDemo } from './IdSessionDemo';
+import { JoinedSerializeDemo } from './JoinedSerializeDemo';
 
-type Page = 'normal' | 'session'
-
-// Component
 export default function App() {
-  const [page, setPage] = useState<Page>('normal');
-
-  return <div>
-    <Demo1 />
-    <hr />
-    <SessionDemo />
-    <hr />
-    <SerializeDemo />
-  </div>
-
-  const component = page === 'normal' ? <Demo1 /> : <SessionDemo />;
-
-  return <div>
-    <button onClick={() => setPage('normal')}>Normal</button>
-    <button onClick={() => setPage('session')}>Session</button>
-    <hr />
-    {component}
-  </div>
+  return <main>
+    <h1>React Cursor Pagination Demo</h1>
+    <h2>Id cursor</h2>
+    <p>Id based pagination</p>
+    <IdCursorDemo />
+    <h2>Id cursor with session</h2>
+    <p>Session storage pagination. Pagination state persists through page refreshes.</p>
+    <IdSessionDemo />
+    <h2>Mixed Cursor</h2>
+    <p>Mixed cursor(age + id) based pagination</p>
+    <AgeCursorDemo />
+    <h2>Mixed Cursor with session serialized</h2>
+    <p>Mixed cursor(joined + id) based pagination with session. Pagination state persists through page refreshes.</p>
+    <JoinedSerializeDemo />
+  </main>
 }
 
