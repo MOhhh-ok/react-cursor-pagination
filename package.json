@@ -15,15 +15,19 @@
   "scripts": {
     "build": "tsc",
     "dev": "concurrently \"tsc --watch\" \"cd demo && pnpm run dev\"",
+    "type-check": "tsc --noEmit",
+    "release": "release-it",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "jotai": "^2.12.5"
+    "jotai": "^2.15.1"
   },
   "devDependencies": {
-    "@types/react": "^19.1.8",
-    "concurrently": "^9.2.0",
-    "typescript": "^5.8.3"
+    "@types/react": "^19.2.2",
+    "concurrently": "^9.2.1",
+    "release": "^6.3.1",
+    "release-it": "^19.0.6",
+    "typescript": "^5.9.3"
   },
   "license": "MIT",
   "repository": {
