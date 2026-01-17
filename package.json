@@ -1,6 +1,6 @@
 {
   "name": "react-cursor-pagination",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "type": "module",
   "description": "A simple React cursor-based pagination library",
   "main": "dist/index.js",
