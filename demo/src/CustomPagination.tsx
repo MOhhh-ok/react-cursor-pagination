@@ -1,24 +1,24 @@
 import { useCursorPagination } from "react-cursor-pagination";
-import styles from './CustomPagination.module.css';
+import styles from "./CustomPagination.module.css";
 
 export type CustomPaginationProps<T> = {
   paginationKey: string;
   nextCursor: T;
-}
+};
 
 export function CustomPagination<T>({ nextCursor, paginationKey }: CustomPaginationProps<T>) {
   const {
     currentPage,
-    addNextCursor,
-    removeLastCursor,
-    removeAllCursors,
-    cursors
+    toFirst,
+    toNext,
+    toPrev,
+    cursors,
   } = useCursorPagination<T>(paginationKey);
 
   return (
     <div className={styles.pagination}>
       <button
-        onClick={removeAllCursors}
+        onClick={toFirst}
         disabled={cursors.length === 0}
         className={styles.button}
       >
@@ -32,16 +32,15 @@ export function CustomPagination<T>({ nextCursor, paginationKey }: CustomPaginat
       </span>
 
       <button
-        onClick={removeLastCursor}
+        onClick={toPrev}
         disabled={cursors.length === 0}
         className={styles.button}
       >
         &lt;&lt;
       </button>
 
-
       <button
-        onClick={() => addNextCursor(nextCursor)}
+        onClick={() => toNext(nextCursor)}
         disabled={!nextCursor}
         className={styles.button}
       >

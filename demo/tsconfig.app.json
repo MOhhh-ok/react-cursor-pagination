@@ -19,6 +19,11 @@
     "jsx": "react-jsx",
     /* Linting */
     "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "react-cursor-pagination": ["../dist/index.d.ts"],
+      "react-cursor-pagination/*": ["../dist/*"]
+    }
   },
   "include": [
     "src"

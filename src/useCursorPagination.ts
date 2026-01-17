@@ -20,16 +20,16 @@ export function useCursorPagination<T>(
   const cursorsAtom = cursorsAtomsMap.get(mapKey)!;
   const [cursors, setCursors] = useAtom(cursorsAtom);
 
-  const addNextCursor = (cursor: T | null | undefined) => {
+  const toNext = (cursor: T | null | undefined) => {
     if (!cursor) return;
     setCursors([...cursors, cursor]);
   };
 
-  const removeLastCursor = () => {
+  const toPrev = () => {
     setCursors(cursors.slice(0, -1));
   };
 
-  const removeAllCursors = () => {
+  const toFirst = () => {
     setCursors([]);
   };
 
@@ -39,9 +39,9 @@ export function useCursorPagination<T>(
     cursors,
     currentCursor,
     currentPage: cursors.length + 1,
-    addNextCursor,
-    removeLastCursor,
-    removeAllCursors,
+    toNext,
+    toPrev,
+    toFirst,
     paginationKey,
   };
 }
